@@ -1,11 +1,15 @@
+import java.util.Stack;
+
 public class Graph {
 	private final int MAX_VERTEX = 10;
 	private Vertex[] vertexs;
+	private Stack<Integer> stack;
 	private int[][] adjacencyMatrix;
 	private int currentAmountOfVerxtes;
 
 	public Graph(){
 		vertexs = new Vertex[MAX_VERTEX];
+		stack = new Stack<>();
 		adjacencyMatrix = new int[MAX_VERTEX][MAX_VERTEX];
 		currentAmountOfVerxtes = 0;
 
@@ -30,11 +34,34 @@ public class Graph {
 		System.out.print(vertexs[vertexIndex].getLabel());
 	}
 
-	public Vertex[] getVertexs(){
-		return this.vertexs;
+	public void depthFirstSearch(){
+		vertexs[0].setWasVisited(true);
+		this.displayVertex(0);
+		stack.push(0);
+		
+
+		while (!stack.empty()) {
+			int vertexIndex = this.getAdjUnvisitedVertex(stack.peek());
+			if(vertexIndex==-1){
+				stack.pop();
+			} else {
+				vertexs[vertexIndex].setWasVisited(true);
+				this.displayVertex(vertexIndex);
+				stack.push(vertexIndex);
+			}
+		}
+
+		for (int i=0; i<currentAmountOfVerxtes; i++) {
+			vertexs[i].setWasVisited(false);
+		}
 	}
 
-	public void setWasVisitedVertex(vertexIndex){
-		vertexs[vertexIndex].setWasVisited(true);
+	private int getAdjUnvisitedVertex(int vertexIndex) {
+		for (int i=0; i<currentAmountOfVerxtes; i++) {
+			if (adjacencyMatrix[vertexIndex][i] == 1 && !vertexs[i].getWasVisited()) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }
