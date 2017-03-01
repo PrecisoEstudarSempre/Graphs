@@ -11,16 +11,18 @@ public class DepthFirstSearch {
 		graph.addVertex('H');
 		graph.addVertex('I');
 
-		graph.addEdge(0,1);
-		graph.addEdge(0,2);
-		graph.addEdge(0,3);
-		graph.addEdge(0,4);
+		graph.addEdge(0,1);						//AB
+		graph.addEdge(0,2);						//AC
+		graph.addEdge(0,3);						//AD
+		graph.addEdge(0,4);						//AE
 
-		graph.addEdge(1,5);
-		graph.addEdge(1,7);
+		graph.addEdge(1,5);						//BF
 
-		graph.addEdge(3,6);
-		graph.addEdge(3,8);
+		graph.addEdge(5,7);						//FH
+
+		graph.addEdge(3,6);						//DG
+		
+		graph.addEdge(6,8);						//GI
 
 		graph.depthFirstSearch();
 	}
