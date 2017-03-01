@@ -34,34 +34,34 @@ public class Graph {
 		System.out.print(vertexs[vertexIndex].getLabel());
 	}
 
-	public void depthFirstSearch(){
-		vertexs[0].setWasVisited(true);
-		this.displayVertex(0);
-		stack.push(0);
+	public void depthFirstSearch(){									//método que executa a busca em profundidade
+		vertexs[0].setWasVisited(true);								//inicia pelo ponto de partida e já marca ele como visitado
+		this.displayVertex(0);										//exibe o nó
+		stack.push(0);												//empilha o nó
 		
 
-		while (!stack.empty()) {
-			int vertexIndex = this.getAdjUnvisitedVertex(stack.peek());
-			if(vertexIndex==-1){
+		while (!stack.empty()) {									//enquanto houverem nós na pilha a busca não terminou
+			int vertexIndex = this.getAdjUnvisitedVertex(stack.peek());		//recupera o próximo nó adjacente não visitado
+			if(vertexIndex==-1){											//não existe ? Remove um nó da pilha
 				stack.pop();
-			} else {
-				vertexs[vertexIndex].setWasVisited(true);
+			} else {														//existe
+				vertexs[vertexIndex].setWasVisited(true);					//executa os passos da regra 1: visite, marque como visitado e empilhe
 				this.displayVertex(vertexIndex);
 				stack.push(vertexIndex);
 			}
-		}
+		}			
 
-		for (int i=0; i<currentAmountOfVerxtes; i++) {
-			vertexs[i].setWasVisited(false);
+		for (int i=0; i<currentAmountOfVerxtes; i++) {						//Se chegou aqui é porque não haviam mais nós na pilha
+			vertexs[i].setWasVisited(false);								//Reseta todos os nós novamente para que a busca possa ser executada depois
 		}
 	}
 
-	private int getAdjUnvisitedVertex(int vertexIndex) {
-		for (int i=0; i<currentAmountOfVerxtes; i++) {
-			if (adjacencyMatrix[vertexIndex][i] == 1 && !vertexs[i].getWasVisited()) {
-				return i;
+	private int getAdjUnvisitedVertex(int vertexIndex) {									//método que recupera o próximo nó adjacente não visitado
+		for (int i=0; i<currentAmountOfVerxtes; i++) {										//para a quantidade atual de nós
+			if (adjacencyMatrix[vertexIndex][i] == 1 && !vertexs[i].getWasVisited()) {		//utiliza a matriz de adjacências para determinar se para um nó existem nós adjacentes a ele
+				return i;																	//caso exista, retorna a posição deste nó no array de nós
 			}
 		}
-		return -1;
+		return -1;																			//caso não exista, retorna -1
 	}
 }
