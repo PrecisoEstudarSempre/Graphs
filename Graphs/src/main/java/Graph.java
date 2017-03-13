@@ -1,15 +1,20 @@
 import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class Graph {
 	private final int MAX_VERTEX = 10;
 	private Vertex[] vertexs;
 	private Stack<Integer> stack;
+	private Queue<Integer> queue;
+
 	private int[][] adjacencyMatrix;
 	private int currentAmountOfVerxtes;
 
 	public Graph(){
 		vertexs = new Vertex[MAX_VERTEX];
 		stack = new Stack<>();
+		queue = new LinkedList<>();
 		adjacencyMatrix = new int[MAX_VERTEX][MAX_VERTEX];
 		currentAmountOfVerxtes = 0;
 
@@ -39,7 +44,6 @@ public class Graph {
 		this.displayVertex(0);										//exibe o nó
 		stack.push(0);												//empilha o nó
 		
-
 		while (!stack.empty()) {									//enquanto houverem nós na pilha a busca não terminou
 			int vertexIndex = this.getAdjUnvisitedVertex(stack.peek());		//recupera o próximo nó adjacente não visitado
 			if(vertexIndex==-1){											//não existe ? Remove um nó da pilha
@@ -63,5 +67,25 @@ public class Graph {
 			}
 		}
 		return -1;																			//caso não exista, retorna -1
+	}
+
+	public void breadthFirstSearch(){
+		vertexs[0].setWasVisited(true);	
+		this.displayVertex(0);
+		queue.add(0);
+		int adjacentVertex;
+
+		while(!queue.isEmpty()){
+			int currentVertex = queue.remove();
+			while ((adjacentVertex=this.getAdjUnvisitedVertex(currentVertex)) != -1) {
+				vertexs[adjacentVertex].setWasVisited(true);
+				this.displayVertex(adjacentVertex);
+				queue.add(adjacentVertex);
+			}
+		}
+
+		for (int i=0; i<currentAmountOfVerxtes; i++) {
+			vertexs[i].setWasVisited(false);
+		}
 	}
 }
