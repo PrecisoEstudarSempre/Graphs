@@ -13,8 +13,8 @@ public class Graph {
 
 	public Graph(){
 		vertexs = new Vertex[MAX_VERTEX];
-		stack = new Stack<>();
-		queue = new LinkedList<>();
+		stack = new Stack<>();										//pilha usada na busca em profundidade
+		queue = new LinkedList<>();									//fila usada na busca em largura
 		adjacencyMatrix = new int[MAX_VERTEX][MAX_VERTEX];
 		currentAmountOfVerxtes = 0;
 
@@ -69,23 +69,23 @@ public class Graph {
 		return -1;																			//caso não exista, retorna -1
 	}
 
-	public void breadthFirstSearch(){
-		vertexs[0].setWasVisited(true);	
-		this.displayVertex(0);
-		queue.add(0);
+	public void breadthFirstSearch(){									//método que executa a busca em largura
+		vertexs[0].setWasVisited(true);									//inicia pelo ponto de partida e já marca ele como visitado  - Regra 1
+		this.displayVertex(0);											//exibe o nó
+		queue.add(0);													//adiciona ele na fila  - Regra 1
 		int adjacentVertex;
 
-		while(!queue.isEmpty()){
-			int currentVertex = queue.remove();
-			while ((adjacentVertex=this.getAdjUnvisitedVertex(currentVertex)) != -1) {
-				vertexs[adjacentVertex].setWasVisited(true);
-				this.displayVertex(adjacentVertex);
-				queue.add(adjacentVertex);
+		while(!queue.isEmpty()){																//enquanto houverem nós na fila é porque não chegamos ao fim
+			int currentVertex = queue.remove();													//removemos o primeiro item da fila para analisar suas adjacências - Regra 2
+			while ((adjacentVertex=this.getAdjUnvisitedVertex(currentVertex)) != -1) {			//para o nó recém removido da fila ele possui adjacências não visitadas ?
+				vertexs[adjacentVertex].setWasVisited(true);									//para todas as adjacências não visitadas é mudado o flag de visitação - Regra 1
+				this.displayVertex(adjacentVertex);												
+				queue.add(adjacentVertex);														//enfileirado  - Regra 1
 			}
 		}
 
-		for (int i=0; i<currentAmountOfVerxtes; i++) {
-			vertexs[i].setWasVisited(false);
+		for (int i=0; i<currentAmountOfVerxtes; i++) {											//Se chegou a esse ponto, a fila está vazia - Regra 3
+			vertexs[i].setWasVisited(false);													//Reseta todos os nós novamente para que a busca possa ser executada depois
 		}
 	}
 }
