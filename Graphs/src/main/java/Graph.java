@@ -88,4 +88,27 @@ public class Graph {
 			vertexs[i].setWasVisited(false);													//Reseta todos os nós novamente para que a busca possa ser executada depois
 		}
 	}
+
+	public void minimumSpanningTree(){
+		vertexs[0].setWasVisited(true);															//Inicia pelo ponto de partida e já marca ele como visitado
+		stack.push(0);																			//Empilha o nó
+
+		while (!stack.empty()) {																//Enquanto a pilha não estiver vazia, analisamos os nós que estão nela
+			int currentVertex = stack.peek();													//Recupero o nó do topo da pilha, não desempilho
+			int nextVertex = this.getAdjUnvisitedVertex(currentVertex);							//Recupera o próximo nó adjacente não visitado
+			if (nextVertex == -1) {																//Não existem nós adjacentes
+				stack.pop();																	//Desempilho o nó do topo
+			} else {
+				vertexs[nextVertex].setWasVisited(true);										//Marco o nó adjacente como visitado
+				stack.push(nextVertex);															//Empilho o nó adjacente
+				this.displayVertex(currentVertex);												//Exibo o nó atual
+				this.displayVertex(nextVertex);													//Exibo o nó adjacente ao atual
+				System.out.print(" ");															//Espaço dado para melhorar a visualização das arestas
+			}
+		}
+
+		for (int i=0; i<currentAmountOfVerxtes; i++) {											//Se chegou aqui é porque não haviam mais nós na pilha
+			vertexs[i].setWasVisited(false);													//Reseta todos os nós novamente para que a árvore geradora mínima possa ser gerada novamente
+		}
+	}
 }
