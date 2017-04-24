@@ -34,6 +34,10 @@ public class Graph {
 		adjacencyMatrix[start][end] = 1;
 		adjacencyMatrix[end][start] = 1;
 	}
+    
+    public void addOrientedEdge(int start, int end){
+        adjacencyMatrix[start][end] = 1;
+    }
 
 	public void displayVertex(int vertexIndex){
 		System.out.print(vertexs[vertexIndex].getLabel());
