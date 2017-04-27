@@ -116,13 +116,13 @@ public class Graph {
 		}
 	}
 
-	public void warshallAlgorithm(){				
-		for (int i=0; i<adjacencyMatrix.length; i++) {
-			for (int j=0; j<adjacencyMatrix[i].length; j++) {
-				if(adjacencyMatrix[i][j] == 1){
-					for (int k=0; k<adjacencyMatrix[i].length; k++) {
-						if(adjacencyMatrix[k][i]==1){
-							adjacencyMatrix[k][j]=1;
+	public void warshallAlgorithm(){													//Implementação do algoritmo de Warshall
+		for (int i=0; i<adjacencyMatrix.length; i++) {									//Percorro todas as linhas
+			for (int j=0; j<adjacencyMatrix[i].length; j++) {							//Percorro todas as colunas daquela linha
+				if(adjacencyMatrix[i][j] == 1){											//Existe uma aresta ali ?
+					for (int k=0; k<adjacencyMatrix[i].length; k++) {					//Percorro completamente a coluna do nó do grafo, exemplo: se estou na linha A, percorro completamente a coluna A.
+						if(adjacencyMatrix[k][i]==1){									//Nesta coluna existe alguma aresta que me leve à ela ?
+							adjacencyMatrix[k][j]=1;									//Determino que se existe A -> B e B -> C, logo A -> C.
 						}
 					}
 				}
