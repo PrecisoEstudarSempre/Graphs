@@ -115,4 +115,45 @@ public class Graph {
 			vertexs[i].setWasVisited(false);													//Reseta todos os nós novamente para que a árvore geradora mínima possa ser gerada novamente
 		}
 	}
+
+	public void warshallAlgorithm(){				
+		for (int i=0; i<adjacencyMatrix.length; i++) {
+			for (int j=0; j<adjacencyMatrix[i].length; j++) {
+				if(adjacencyMatrix[i][j] == 1){
+					for (int k=0; k<adjacencyMatrix[i].length; k++) {
+						if(adjacencyMatrix[k][i]==1){
+							adjacencyMatrix[k][j]=1;
+						}
+					}
+				}
+			}
+		}	
+
+		this.displayResultsWarshallAlgorithm();
+	}
+
+	private void displayResultsWarshallAlgorithm(){										//Exibe os caminhos possíveis em um grafo orientado após 
+		for (int i=0; i<adjacencyMatrix.length; i++) {									//a execução do algoritmo de Warshall
+			for (int j=0; j<adjacencyMatrix[i].length; j++) {
+				if(adjacencyMatrix[i][j]==1){
+					this.displayVertex(i);
+					System.out.print(" -> ");
+					this.displayVertex(j);
+					System.out.println();
+				}				
+			}
+		}		
+	}
+
+	public void checkPossibleWay(int start, int end){									//Verifica se um caminho é possível utilizando a matriz de adjacência. Este método
+		System.out.print("E possivel um caminho de ");									//funciona da forma correta somente após a execução do algoritmo de Warshall.
+		this.displayVertex(start);
+		System.out.print(" para ");
+		this.displayVertex(end);
+		System.out.print(": ");
+		
+		String isPossible = adjacencyMatrix[start][end] == 1 ? "True" : "False";
+		System.out.print(isPossible);
+		System.out.println();
+	}
 }
