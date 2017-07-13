@@ -72,12 +72,12 @@ class Graph{
 		shortestPathArray = new ShortestPathObject[MAX_VERTS];
 	}
 
-	public void addVertex(String label){
+	public void addVertex(String label){					//função que adiciona o vértice do grafo
 		vertexList[nVerts++] = new Vertex(label);
 	}
 
-	public void addEdge(int start, int end, int weight){
-		adjMat[start][end] = weight;
+	public void addEdge(int start, int end, int weight){	//função que adiciona uma aresta no vértice
+		adjMat[start][end] = weight;						//o peso fica armazenado na matriz de adjacência
 	}
 
 	public void findAllShortestPaths(){
@@ -90,11 +90,11 @@ class Graph{
 			shortestPathArray[i] = new ShortestPathObject(startTree, distance);
 		}
 
-		while (nTree < nVerts) {
-			int shortestVertex = getMin();
-			int shortestDistance = shortestPathArray[shortestVertex].getDistance();
+		while (nTree < nVerts) {														//até todos os nós estarem na árvore
+			int shortestVertex = getMin();												//seleciona o vértice que tem o valor mínimo, essa função provê
+			int shortestDistance = shortestPathArray[shortestVertex].getDistance();		//a direção que o algoritmo vai seguir
 
-			if(shortestDistance == INFINITY){
+			if(shortestDistance == INFINITY){											//se todos forem infinito ou todos na árvore
 				System.out.println("There are unreachable vertices");
 				break;
 			} else {
@@ -102,14 +102,14 @@ class Graph{
 				startToCurrent = shortestDistance;
 			}
 
-			vertexList[currentVert].setIsInTree(true);
-			nTree++;
-			updateShortestPathArray();
+			vertexList[currentVert].setIsInTree(true);									//coloca o vértice atual na árvore
+			nTree++;																	//mais um nó entrou na árvore
+			updateShortestPathArray();													//atualizo os valores mínimos
 		}
 
-		displayPaths();
+		displayPaths();																	//exibo todos os nós
 
-		nTree = 0;
+		nTree = 0;																		//limpa a ávore
 		for (int i=0; i<nVerts; i++) {
 			vertexList[i].setIsInTree(false);
 		}		
@@ -119,9 +119,9 @@ class Graph{
 		int shortestDistance = INFINITY;
 		int shortestVertex = 0;
 
-		for (int i=1; i<nVerts; i++) {
-			if (!vertexList[i].isInTree() && shortestPathArray[i].getDistance() < shortestDistance) {
-				shortestDistance = shortestPathArray[i].getDistance();
+		for (int i=1; i<nVerts; i++) {																	//passo por todos os nós
+			if (!vertexList[i].isInTree() && shortestPathArray[i].getDistance() < shortestDistance) {	//analiso se o nó já está na árvore e se a distância dele
+				shortestDistance = shortestPathArray[i].getDistance();									//é a menor. Se for, atualizo as variáveis
 				shortestVertex = i;
 			}
 		}
@@ -130,18 +130,18 @@ class Graph{
 
 	private void updateShortestPathArray(){
 		int column = 1;
-		while (column < nVerts) {
-			if (vertexList[column].isInTree()) {
-				column++;
+		while (column < nVerts) {														//percorre todas as colunas da "tabelinha"
+			if (vertexList[column].isInTree()) {										//se a coluna da "tabelinha" já estiver na árvore não há
+				column++;																//de atualizar sua entrada no array de valores mínimos
 				continue;
 			}
 
-			int currentToTarget = adjMat[currentVert][column];
-			int startToTarget = startToCurrent + currentToTarget;
-			int shortestDistance = shortestPathArray[column].getDistance();
+			int currentToTarget = adjMat[currentVert][column];							//variável que guarda o valor da distância do nó atual(RJ) até um nó de destino que não está na árvore, nem sempre esse vértice de destino tem uma conexão de fato
+			int startToTarget = startToCurrent + currentToTarget;						//variável que guarda a distância total do início até o destino
+			int shortestDistance = shortestPathArray[column].getDistance();				//recupera o valor do array de valores mínimos
 
-			if (startToTarget < shortestDistance) {
-				shortestPathArray[column].setParentVert(currentVert);
+			if (startToTarget < shortestDistance) {										//essa comparação é essencial pois se não há uma conexão de fato entre dois vértices, a soma total será INFINITY + algum valor de aresta e este é menor que somente INFINITY, logo não há necessidade de atualização nesse caso.
+				shortestPathArray[column].setParentVert(currentVert);					//caso a soma seja de valores que realmente possuem conexão (RJ-SP-RP-BN) ela será menor que INFINITY e logo há porque atualizar
 				shortestPathArray[column].setDistance(startToTarget);
 			}
 			column++;
